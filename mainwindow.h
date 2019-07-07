@@ -18,6 +18,20 @@ public:
 private slots:
     void on_actiondakai_triggered();
 
+    void on_actionbaocun_triggered();
+
+    void on_actionxinjian_triggered();
+
+    void on_actiontuichu_triggered();
+
+    void on_actionchexiao_triggered();
+
+    void on_actionfuzhi_triggered();
+
+    void on_actionzhantie_triggered();
+
+    void on_actionjianqie_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

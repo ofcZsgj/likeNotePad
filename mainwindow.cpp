@@ -38,6 +38,7 @@ void MainWindow::on_actiondakai_triggered()
     //将Qstring转换为char*使得fopen可以接收
     QTextCodec * codec = QTextCodec::codecForName("GBK");//注意需要打开的文件为GBK
     char * file = codec->fromUnicode(fileName).data();
+
     FILE * fp = fopen(file,"r");
     if(!fp)
         return ;
@@ -55,4 +56,65 @@ void MainWindow::on_actiondakai_triggered()
 
     fclose(fp);
 
+}
+
+void MainWindow::on_actionbaocun_triggered()
+{
+    //打开文件
+    QString fileName = QFileDialog::getSaveFileName();
+
+    // 转码
+    QTextCodec * codec = QTextCodec::codecForName("GBK");
+    char * file = codec->fromUnicode(fileName).data();
+
+    FILE * fp = fopen(file,"w");
+    if(!fp)
+        return;
+
+    //读取textedit
+    QString txt = ui->textEdit->toPlainText();
+    //转成char*类型
+    const char * buf = txt.toStdString().data();
+
+    //保存文件
+    fputs(buf,fp);
+}
+
+void MainWindow::on_actionxinjian_triggered()
+{
+    //暂时无保存当前正在编辑文件的功能，仅清空
+
+    //ui->textEdit->setText("");
+    ui->textEdit->clear();
+
+}
+
+void MainWindow::on_actiontuichu_triggered()
+{
+    //缺少提示用户保存
+    exit(0);
+}
+
+void MainWindow::on_actionchexiao_triggered()
+{
+    //撤销
+    ui->textEdit->undo();
+}
+
+void MainWindow::on_actionfuzhi_triggered()
+{
+    //复制
+    ui->textEdit->copy();
+}
+
+void MainWindow::on_actionzhantie_triggered()
+{
+     //粘贴
+    ui->textEdit->paste();
+}
+
+void MainWindow::on_actionjianqie_triggered()
+{
+    //剪贴
+    ui->textEdit->cut();
 }
