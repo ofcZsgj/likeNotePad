@@ -11,7 +11,7 @@
 #include <QDebug>
 #define cout qDebug()
 
-
+QString fileName = NULL;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -44,7 +44,7 @@ void MainWindow::on_actiondakai_triggered()
      */
 
     //通过对话框打开文件 获取文件路径 QString
-    QString fileName = QFileDialog::getOpenFileName();
+    fileName = QFileDialog::getOpenFileName();
     //将Qstring转换为char*使得fopen可以接收
     QTextCodec * codec = QTextCodec::codecForName("GBK");//注意需要打开的文件为GBK
     char * file = codec->fromUnicode(fileName).data();
@@ -71,7 +71,7 @@ void MainWindow::on_actiondakai_triggered()
 void MainWindow::on_actionbaocun_triggered()
 {
     //打开文件
-    QString fileName = QFileDialog::getSaveFileName();
+    fileName = QFileDialog::getSaveFileName();
 
     // 转码
     QTextCodec * codec = QTextCodec::codecForName("GBK");
@@ -122,4 +122,46 @@ void MainWindow::on_actionjianqie_triggered()
 {
     //剪贴
     ui->textEdit->cut();
+}
+
+void MainWindow::on_actionbianji_triggered()
+{
+     /* 编译步骤
+      * 1、判断是否保存(保存则编译否则进行保存操作)
+      * 2、组装cmd 中 执行的 gcc格式
+      * 3、编译 如果出错提示错误信息 执行程序
+      */
+    if(fileName == NULL) {
+        //打开文件
+        fileName = QFileDialog::getSaveFileName();
+
+        // 将QString类型的文件名转码
+        QTextCodec * codec = QTextCodec::codecForName("GBK");
+        char * file = codec->fromUnicode(fileName).data();
+
+        //读取textedit的内容
+        QString txt = ui->textEdit->toPlainText();
+        //转成char*类型
+        const char * buf = txt.toStdString().data();
+
+        saveFile(file,buf);
+    }
+    else {
+        //格式为  gcc -o D:\a.exe D:\a.c
+        QString des = fileName;
+        //此时des为将 .c替换为 .exe的filename
+        des.replace(".c",".exe");
+
+        char comm[1024] = "gcc -o ";
+        //字符串拼接,并且进行转码
+        strcat(comm,des.toStdString().data());
+        strcat(comm," ");
+        strcat(comm,fileName.toStdString().data());
+        //执行并判断是否成功
+        if(!system(comm)) {//若执行成功 system返回值为0
+            char cmd[256]  = "cmd /k ";
+            strcat(cmd,des.toStdString().data());
+            system(cmd);
+        }
+    }
 }

@@ -34,6 +34,8 @@ private slots:
 
     void saveFile(const char * file, const char * buf);
 
+    void on_actionbianji_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
