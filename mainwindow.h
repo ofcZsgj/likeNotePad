@@ -36,6 +36,10 @@ private slots:
 
     void on_actionbianji_triggered();
 
+    void on_actionlingcunwei_triggered();
+
+    void on_actionguanyu_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

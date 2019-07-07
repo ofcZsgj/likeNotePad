@@ -71,6 +71,7 @@ void MainWindow::on_actiondakai_triggered()
 void MainWindow::on_actionbaocun_triggered()
 {
     //打开文件
+    if(fileName == NULL)//避免保存弹出另存为对话框
     fileName = QFileDialog::getSaveFileName();
 
     // 转码
@@ -91,7 +92,7 @@ void MainWindow::on_actionxinjian_triggered()
 
     //ui->textEdit->setText("");
     ui->textEdit->clear();
-
+    fileName.clear();//使fileName置为空，则下次保存新文件弹出另存为
 }
 
 void MainWindow::on_actiontuichu_triggered()
@@ -159,9 +160,32 @@ void MainWindow::on_actionbianji_triggered()
         strcat(comm,fileName.toStdString().data());
         //执行并判断是否成功
         if(!system(comm)) {//若执行成功 system返回值为0
+            cout<<"cg!";
             char cmd[256]  = "cmd /k ";
             strcat(cmd,des.toStdString().data());
             system(cmd);
         }
     }
+}
+
+void MainWindow::on_actionlingcunwei_triggered()
+{
+    //打开文件
+    fileName = QFileDialog::getSaveFileName();
+
+    // 转码
+    QTextCodec * codec = QTextCodec::codecForName("GBK");
+    char * file = codec->fromUnicode(fileName).data();
+
+    //读取textedit
+    QString txt = ui->textEdit->toPlainText();
+    //转成char*类型
+    const char * buf = txt.toStdString().data();
+
+    saveFile(file,buf);
+}
+
+void MainWindow::on_actionguanyu_triggered()
+{
+
 }
