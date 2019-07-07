@@ -24,6 +24,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::saveFile(const char * file, const char * buf)
+{
+    FILE * fp = fopen(file,"w");
+    if(!fp)
+        return;
+
+    //保存文件
+    fputs(buf,fp);
+}
+
 void MainWindow::on_actiondakai_triggered()
 {
     //打开文件
@@ -67,17 +77,12 @@ void MainWindow::on_actionbaocun_triggered()
     QTextCodec * codec = QTextCodec::codecForName("GBK");
     char * file = codec->fromUnicode(fileName).data();
 
-    FILE * fp = fopen(file,"w");
-    if(!fp)
-        return;
-
     //读取textedit
     QString txt = ui->textEdit->toPlainText();
     //转成char*类型
     const char * buf = txt.toStdString().data();
 
-    //保存文件
-    fputs(buf,fp);
+    saveFile(file,buf);
 }
 
 void MainWindow::on_actionxinjian_triggered()

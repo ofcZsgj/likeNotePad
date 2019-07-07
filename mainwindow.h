@@ -32,6 +32,8 @@ private slots:
 
     void on_actionjianqie_triggered();
 
+    void saveFile(const char * file, const char * buf);
+
 private:
     Ui::MainWindow *ui;
 };
